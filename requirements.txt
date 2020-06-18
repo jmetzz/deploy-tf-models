@@ -1,0 +1,6 @@
+gunicorn==20.0.0
+flask==1.1.1
+flasgger==0.9.4
+flask_bootstrap
+pillow==7.1.2
+tensorflow==2.1.0

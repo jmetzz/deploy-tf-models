@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  tf-serving-server:
+    container_name: tf-serving-server
+    image: tensorflow/serving
+    networks: ['tf-serving']
+    ports:
+      - "8501:8501"
+    volumes:
+      - "./resources/models:/models"
+    environment:
+      - MODEL_NAME=pets
+
+
+  tf-serving-client:
+    container_name: tf-serving-client
+    image: tf-serving-client:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks: ['tf-serving']
+    ports:
+      - "5000:5000"
+    environment:
+      - TF_SERVER_HOST=tf-serving-server
+      - TF_SERVER_PORT=8501
+      - TF_MODEL_NAME=pets
+    depends_on:
+      - tf-serving-server
+
+
+networks: {tf-serving: {}}
